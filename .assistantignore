@@ -1,0 +1,13 @@
+.ipynb_checkpoints/*
+__pycache__
+
+Untitled.ipynb
+
+.gitignore
+
+.env
+.assistantignore
+
+.assistant/*
+assistant.py
+assistant\__init__.py
