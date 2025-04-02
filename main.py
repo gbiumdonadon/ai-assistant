@@ -13,14 +13,14 @@ def assistant_start():
     """Initializes the assistant."""
     ensure_directory(ASSISTANT_DIR)
     structure = get_directory_structure_with_ignore('./')
-    create_file(f"{ASSISTANT_DIR}/assistant_01.md", f'### Files ###\n{structure}\n\n')
-    create_file(f"{ASSISTANT_DIR}/user_01.md")
+    create_file(f"{ASSISTANT_DIR}/01_assistant.md", f'### Files ###\n{structure}\n\n')
+    create_file(f"{ASSISTANT_DIR}/01_user.md")
 
 
 def assistant_run():
     """Runs the main assistant loop."""
-    latest_assistant_file = get_latest_file(ASSISTANT_DIR, "assistant_")
-    latest_user_file = get_latest_file(ASSISTANT_DIR, "user_")
+    latest_assistant_file = get_latest_file(ASSISTANT_DIR, "_assistant")
+    latest_user_file = get_latest_file(ASSISTANT_DIR, "_user")
 
     if not latest_assistant_file or not latest_user_file:
         print("Error: No assistant or user file found.")
@@ -34,10 +34,10 @@ def assistant_run():
 
     try:
         generated_text = call_gemini_api(assistant_content, user_content)
-        next_assistant_number = get_next_file_number(ASSISTANT_DIR, "assistant_")
-        create_file(f"{ASSISTANT_DIR}/assistant_{next_assistant_number:02d}.md", generated_text)
-        next_user_number = get_next_file_number(ASSISTANT_DIR, "user_")
-        create_file(f"{ASSISTANT_DIR}/user_{next_user_number:02d}.md")
+        next_assistant_number = get_next_file_number(ASSISTANT_DIR, "_assistant")
+        create_file(f"{ASSISTANT_DIR}/{next_assistant_number:02d}_assistant.md", generated_text)
+        next_user_number = get_next_file_number(ASSISTANT_DIR, "_user")
+        create_file(f"{ASSISTANT_DIR}/{next_user_number:02d}_user.md")
     except RuntimeError as e:
         print(f"Error: {e}")
 

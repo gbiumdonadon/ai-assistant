@@ -59,13 +59,13 @@ def get_file_content(filepath):
 def create_file(filepath, content=""):
     """Creates a file with the given content."""
     Path(filepath).parent.mkdir(parents=True, exist_ok=True)
-    with open(filepath, 'w') as f:
+    with open(filepath, 'w', encoding='utf-8') as f:
         f.write(content)
 
 def get_latest_file(directory, prefix):
   """Gets the latest file matching a prefix in a directory."""
-  files = [f for f in os.listdir(directory) if f.startswith(prefix) and f.endswith('.md')]
+  files = [f for f in os.listdir(directory) if f.endswith(prefix + '.md')]
   if not files:
       return None
-  files.sort(key=lambda x: int(x.split('_')[1].split('.')[0]))
+  files.sort(key=lambda x: int(x.split('_')[0].split('.')[0]))
   return files[-1]

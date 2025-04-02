@@ -1,5 +1,6 @@
 .ipynb_checkpoints/*
-__pycache__
+__pycache__/*
+.git/*
 
 Untitled.ipynb
 
@@ -11,3 +12,4 @@ Untitled.ipynb
 .assistant/*
 assistant.py
 assistant\__init__.py
+README.md

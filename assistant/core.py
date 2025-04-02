@@ -2,10 +2,10 @@ import os
 
 def get_next_file_number(directory, prefix):
     """Gets the next available file number for a given prefix."""
-    files = [f for f in os.listdir(directory) if f.startswith(prefix) and f.endswith('.md')]
+    files = [f for f in os.listdir(directory) if f.endswith(prefix + '.md')]
     if not files:
         return 1
-    numbers = [int(f.split('_')[1].split('.')[0]) for f in files]
+    numbers = [int(f.split('_')[0].split('.')[0]) for f in files]
     return max(numbers) + 1
 
 def process_assistant_response(response_json):
