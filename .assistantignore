@@ -13,3 +13,5 @@ Untitled.ipynb
 assistant.py
 assistant\__init__.py
 README.md
+assistant.egg-info/*
+build/*

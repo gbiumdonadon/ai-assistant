@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 import os
 import requests
 from google.api_core.exceptions import GoogleAPIError

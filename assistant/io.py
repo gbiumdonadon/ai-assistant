@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import glob
 from pathlib import Path
@@ -16,7 +17,7 @@ def get_directory_structure(path, ignore_files):
             filepath = os.path.join(root, f)
             structure += '{}{}\n'.format(subindent, f)
             try:
-                with open(filepath, 'r') as file:
+                with open(filepath, 'r', encoding='utf-8') as file:
                     file_content = file.read()
                     structure += f'\n{subindent}## {filepath} ##\n{file_content}\n\n'
             except FileNotFoundError:
@@ -31,7 +32,7 @@ def process_assistant_ignore(base_path, ignore_file_path=".assistantignore"):
     ignore_list = []
     ignore_file = Path(base_path) / ignore_file_path
     if ignore_file.exists():
-        with ignore_file.open('r') as f:
+        with ignore_file.open('r', encoding='utf-8') as f:
             for line in f:
                 line = line.strip()
                 if line and not line.startswith('#'):
