@@ -5,7 +5,7 @@ from google.api_core.exceptions import GoogleAPIError
 from dotenv import load_dotenv
 from assistant.core import process_assistant_response
 
-load_dotenv()
+load_dotenv(dotenv_path='../')
 
 def call_gemini_api(assistant_content, user_content):
     """Calls the Gemini API and returns the generated text."""

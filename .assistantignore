@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-.ipynb_checkpoints/*
-__pycache__/*
-.git/*
+.ipynb_checkpoints/
+__pycache__/
+.git/
 
 Untitled.ipynb
 
@@ -10,9 +10,10 @@ Untitled.ipynb
 .env
 .assistantignore
 
-.assistant/*
+.assistant/
 assistant.py
 assistant\__init__.py
 README.md
-assistant.egg-info/*
-build/*
+assistant.egg-info/
+build/
+.build/
