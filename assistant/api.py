@@ -10,6 +10,7 @@ load_dotenv(dotenv_path='../')
 def call_gemini_api(assistant_content, user_content):
     """Calls the Gemini API and returns the generated text."""
     api_key = os.getenv('GOOGLE_API_KEY')
+    
     if not api_key:
         raise ValueError("GOOGLE_API_KEY not found in .env file or environment variables.")
 

@@ -1,13 +1,24 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from assistant.io import get_directory_structure_with_ignore, create_file, get_latest_file, get_file_content
+from assistant.filesystem import get_directory_structure_with_ignore, create_file, get_latest_file, get_file_content
 from assistant.api import call_gemini_api
 from assistant.utils import ensure_directory
 from assistant.core import get_next_file_number
 
-
 ASSISTANT_DIR = ".assistant"
+API_KEYS = ["GOOGLE_API_KEY"]
+
+def assistant_config():
+    """Configura as variáveis de ambiente necessárias."""
+    print("Configurando as chaves de API:")
+    for key in API_KEYS:
+        value = input(f"'{key}': ").strip()
+        if value:
+            os.environ[key] = value
+            print(f"Variável de ambiente '{key}' : '{os.environ[key]}' configurada.")
+        else:
+            print(f"Atenção: '{key}' não foi configurada.")
 
 def assistant_start():
     """Initializes the assistant."""
@@ -47,7 +58,7 @@ def assistant_setup():
 
 def main():
     if len(sys.argv) < 2:
-        print('Uso: assistant start | run | setup')
+        print('Uso: assistant start | run | setup | configure')
         sys.exit(1)
 
     command = sys.argv[1]
@@ -57,6 +68,8 @@ def main():
         assistant_run()
     elif command == 'setup':
         assistant_setup()
+    elif command == 'configure':
+        assistant_config()
     else:
         print('Comando inválido. Use start, run ou setup.')
 
