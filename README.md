@@ -65,5 +65,3 @@ assistant run
 * O tratamento de erros está incluído, mas erros inesperados podem ocorrer.  Verifique a saída do console para obter informações adicionais sobre erros.
 * O código inclui várias funções auxiliares para manipulação de arquivos e diretórios.
 * O código utiliza a codificação UTF-8. Certifique-se que todos os seus arquivos estejam utilizando esta codificação.  O erro de codificação relatado no código indica arquivos com codificação incorreta que precisam ser corrigidos ou recriados.
-
-Esta documentação fornece uma visão geral do projeto. Para mais detalhes, consulte o código-fonte.  Lembre-se de substituir os placeholders `<repositório_git>` e `<nome_do_repositório>` pelos valores corretos.
