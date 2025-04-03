@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: ai_assistant command",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "assistant.main:main", // Module to run
+            // "program": "${workspaceFolder}\\assistant\\main.py",
+            "args": ["start"], // Arguments to pass to the script
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}\\assistant",
+            "justMyCode": false // Set to false to debug library code if necessary.
+        }
+    ]
+}
