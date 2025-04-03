@@ -1,75 +1,69 @@
-# ai-assistant
+## Documentação do Assistente de IA
 
-# Assistente de Desenvolvedor com Gemini API
+Este documento descreve como instalar e configurar o projeto do Assistente de IA, que utiliza a API do Google Gemini para gerar texto.
 
-Este projeto implementa um assistente de linha de comando que utiliza a API Gemini para auxiliar em tarefas de desenvolvimento.
+**Pré-requisitos:**
 
-## Pré-requisitos
+* Python 3.7 ou superior.
+* Uma conta do Google Cloud com acesso à API do Google Gemini.
 
-* Python 3.6+
-* Uma chave de API do Gemini (Google Cloud).
 
-## Instalação
+**1. Instalando o projeto e suas dependências:**
 
-1.  Clone este repositório:
+1. **Clone o repositório.**
 
-    ```bash
-    git clone <URL_DO_REPOSITÓRIO>
-    cd <NOME_DO_DIRETÓRIO>
-    ```
+2. **Crie um ambiente virtual (Recomendado):**
 
-2.  Instale as dependências:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+.venv\Scripts\activate  # Windows
+```
 
-    ```bash
-    pip install requests
-    ```
+**Observação:** Se o arquivo `requirements.txt` não existir, você precisará editar o arquivo `setup.py` e adicionar as dependências necessárias na lista `install_requires`.  No mínimo, você precisará adicionar `requests` e `google-api-core` e `python-dotenv`.  Execute então:
 
-3.  Configure sua chave de API:
 
-    * Você pode inserir sua chave API diretamente no código, alterando a linha:
-        `api_key = 'SUA_CHAVE_API'` dentro da função `assistant_run`.
-    * Como alternativa, você pode passar a chave de API como um argumento da linha de comando ao executar o comando `run`.
+```bash
+pip install -e .
+```
 
-## Uso
 
-O assistente possui os seguintes comandos:
+**2. Configurando o arquivo `.env`:**
 
-* `start`: Inicia um novo assistente, criando um diretório `.assistant` e um arquivo `assistant_01.md` com a estrutura de diretórios e arquivos do projeto.
-* `run`: Executa o assistente, enviando o conteúdo do arquivo `assistant_01.md` e do último arquivo `user_*.md` para a API Gemini e salvando a resposta em um novo arquivo `assistant_*.md`.
-* `setup`: Comando reservado para implementações futuras, como configurações e personalizações do assistente.
+O arquivo `.env` contém as variáveis de ambiente necessárias para o funcionamento do projeto.  Crie um arquivo chamado `.env` na raiz do projeto e adicione a seguinte linha, substituindo `<sua_chave_de_api>` pela sua chave de API do Google Gemini:
 
-### Exemplos
+```
+GOOGLE_API_KEY=<sua_chave_de_api>
+```
 
-1.  Inicie um novo assistente:
+**Obtendo uma chave de API para o Google Gemini:**
 
-    ```bash
-    python seu_script.py start
-    ```
+Para obter uma chave de API do Google Gemini, siga as etapas descritas na [documentação oficial do Google Cloud](https://cloud.google.com/docs/authentication/getting-started).  Você precisará criar um projeto no Google Cloud Console, habilitar a API do Google Gemini e criar uma chave de API.  Certifique-se de restringir o acesso à sua chave de API o máximo possível para fins de segurança.
 
-2.  Execute o assistente:
 
-    ```bash
-    python seu_script.py run
-    ```
-    Caso você não tenha inserido a chave API diretamente no código, você pode passar ela como argumento:
-    ```bash
-    python seu_script.py run SUA_CHAVE_API
-    ```
+**3. Executando o Assistente:**
 
-## Estrutura de Arquivos
+Depois de instalar as dependências e configurar o arquivo `.env`, você pode executar o assistente usando os seguintes comandos:
 
-* `.assistant/`: Diretório que armazena os arquivos de histórico do assistente.
-    * `assistant_*.md`: Arquivos contendo as respostas da API Gemini.
-    * `user_*.md`: Arquivos contendo as perguntas/comandos do usuário.
-* `.assistantignore`: Arquivo opcional que especifica os diretórios e arquivos a serem ignorados ao gerar a estrutura do projeto.
+* **`assistant start`:** Inicializa o assistente, criando os arquivos iniciais.
+* **`assistant run`:** Executa o loop principal do assistente, processando o conteúdo dos arquivos `.md` e gerando uma resposta usando a API do Gemini.  Os arquivos devem ser nomeados segundo o padrão `XX_assistant.md` e `XX_user.md` onde XX é o número sequencial.
+* **`assistant setup`:**  (Atualmente sem função)
 
-## Classe GeminiAPI
 
-A classe `GeminiAPI` encapsula a lógica de interação com a API Gemini. Ela possui os seguintes métodos:
+**Exemplo de Uso:**
 
-* `__init__(api_key)`: Inicializa a classe com a chave da API.
-* `generate_content(prompt)`: Envia um prompt para a API Gemini e retorna a resposta.
+```bash
+assistant start
+assistant run
+```
 
-## Contribuição
+**Observações importantes:**
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir pull requests ou relatar problemas.
+* O projeto utiliza o arquivo `.assistantignore` para especificar arquivos e diretórios que devem ser ignorados durante a geração da estrutura de diretórios. Adicione os caminhos que você quer ignorar, um por linha neste arquivo.
+* A saída do assistente é salva em novos arquivos `.md` na pasta `.assistant`.
+* Certifique-se de ter uma conexão estável com a internet, pois o projeto depende de chamadas à API do Google Gemini.
+* O tratamento de erros está incluído, mas erros inesperados podem ocorrer.  Verifique a saída do console para obter informações adicionais sobre erros.
+* O código inclui várias funções auxiliares para manipulação de arquivos e diretórios.
+* O código utiliza a codificação UTF-8. Certifique-se que todos os seus arquivos estejam utilizando esta codificação.  O erro de codificação relatado no código indica arquivos com codificação incorreta que precisam ser corrigidos ou recriados.
+
+Esta documentação fornece uma visão geral do projeto. Para mais detalhes, consulte o código-fonte.  Lembre-se de substituir os placeholders `<repositório_git>` e `<nome_do_repositório>` pelos valores corretos.
