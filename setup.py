@@ -12,7 +12,7 @@ except FileNotFoundError:
     long_description = "Assistant package"
 
 setup(
-    name='assistant',
+    name='ai_assistant',
     version='0.1.0',
     packages=find_packages(),  # Use find_packages() to automatically detect packages, but ensure __init__.py exists in assistant directory.
     install_requires=[
