@@ -3,24 +3,13 @@ import sys
 import os
 import yaml
 from assistant.filesystem import get_directory_structure_with_ignore, create_file, get_latest_file, get_file_content
-from assistant.api import call_gemini_api
+from assistant.call_gemini_api import call_gemini_api
+from assistant.call_deepseek_api import call_deepseek_api
+from assistant.call_chatgpt_api import call_chatgpt_api
 from assistant.utils import ensure_directory
 from assistant.core import get_next_file_number
 
 ASSISTANT_DIR = ".assistant"
-API_KEYS = ["GOOGLE_API_KEY"]
-
-# TODO: Metodo ainda nao funciona
-def assistant_config():
-    """Configura as variáveis de ambiente necessárias."""
-    print("Configurando as chaves de API:")
-    for key in API_KEYS:
-        value = input(f"'{key}': ").strip()
-        if value:
-            os.environ[key] = value
-            print(f"Variável de ambiente '{key}' : '{os.environ[key]}' configurada.")
-        else:
-            print(f"Atenção: '{key}' não foi configurada.")
 
 def assistant_start():
     """Initializes the assistant."""
@@ -36,7 +25,18 @@ def assistant_start():
             print(f"Created config file: {config_file_path}")
         except Exception as e:
             print(f"Error creating config file: {e}")
-            return  # Exit early if config creation fails.
+            return
+    
+    # Create .assistantignore file if it doesn't exist
+    ignore_file_path = ".assistantignore"
+    if not os.path.exists(ignore_file_path):
+        try:
+            with open(ignore_file_path, 'w', encoding='utf-8') as f:
+                f.write(".assistant\n")
+            print(f"Created .assistantignore file")
+        except Exception as e:
+            print(f"Error creating .assistantignore file: {e}")
+            return
         
     structure = get_directory_structure_with_ignore('./')
     create_file(f"{ASSISTANT_DIR}/01_assistant.md", f'######### Files ######### \n{structure}\n\n')
@@ -55,10 +55,25 @@ def assistant_run():
     assistant_content = get_file_content(os.path.join(ASSISTANT_DIR, "01_assistant.md"))
     user_content = get_file_content(os.path.join(ASSISTANT_DIR, latest_user_file))
 
-    # print('Prompt enviado:\n' + f"`{assistant_content}`{user_content}")
-
     try:
-        generated_text = call_gemini_api(assistant_content, user_content)
+        try:
+            config_file = ".assistant/config.yaml"
+            with open(config_file, 'r') as file:
+                config = yaml.safe_load(file)
+                model = config['system_instruction'][1]
+        except FileNotFoundError:
+            logging.error(f"Config file not found: {config_file}")
+            return None
+
+        if model['model'] == 'gemini':
+            generated_text = call_gemini_api(assistant_content, user_content)
+        elif model['model'] == 'deepseek':
+            generated_text = call_deepseek_api(assistant_content, user_content)
+        elif model['model'] == 'chatgpt':
+            generated_text = call_chatgpt_api(assistant_content, user_content)
+        else:
+            raise ValueError(f"Model {model} not supported.")
+
         next_assistant_number = get_next_file_number(ASSISTANT_DIR, "_assistant")
         create_file(f"{ASSISTANT_DIR}/{next_assistant_number:02d}_assistant.md", generated_text)
         next_user_number = get_next_file_number(ASSISTANT_DIR, "_user")
@@ -66,27 +81,18 @@ def assistant_run():
     except RuntimeError as e:
         print(f"Error: {e}")
 
-
-def assistant_setup():
-    """Performs any setup actions (currently does nothing)."""
-    return False
-
 def main():
     if len(sys.argv) < 2:
-        print('Uso: assistant start | run | setup | configure')
+        print('Uso: assistant start | run')
         sys.exit(1)
 
     command = sys.argv[1]
-    if command == 'start':
+    if command == 'start' or command == 'reset':
         assistant_start()
     elif command == 'run':
         assistant_run()
-    elif command == 'setup':
-        assistant_setup()
-    elif command == 'configure':
-        assistant_config()
     else:
-        print('Comando inválido. Use start, run ou setup.')
+        print('Comando inválido. Use start/reset ou run.')
 
 if __name__ == "__main__":
     main()
